@@ -19,10 +19,3 @@ public class SkillElement : GeneralElement
         base.UpdateUIView(_strValue, expirience, expProgress, lvl);
     }
 }
-public enum Skills
-{
-    Armor = 0,
-    Sword = 1,
-    Dual = 2,
-    Strength = 3
-}
