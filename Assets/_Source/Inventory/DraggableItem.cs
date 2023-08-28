@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Image))] [RequireComponent(typeof(ItemGeneral))]
 public class DraggableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [HideInInspector] public Transform ParentAfterDrag;

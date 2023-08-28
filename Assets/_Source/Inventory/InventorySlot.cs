@@ -5,9 +5,9 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private Belongs _belong;
-    private DraggableItem _item;
-    public void OnDrop(PointerEventData eventData)
+    [SerializeField] protected Belongs _belong;
+    protected DraggableItem _item;
+    public virtual void OnDrop(PointerEventData eventData)
     {
         _item = eventData.pointerDrag.GetComponent<DraggableItem>();
         if (transform.childCount == 0 && CheckSlot(_item))
@@ -15,7 +15,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             _item.ParentAfterDrag = this.transform;
         }
     }
-    private bool CheckSlot(DraggableItem item)
+    protected virtual bool CheckSlot(DraggableItem item)
     {
         switch (_belong)
         {

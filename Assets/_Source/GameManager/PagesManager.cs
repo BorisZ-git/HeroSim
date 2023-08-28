@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [DisallowMultipleComponent]
 public class PagesManager : MonoBehaviour
 {
-    private GameObject _currentPanel;
+    [SerializeField] private GameObject _currentPanel;
 
     public void SetPanel(GameObject panelToActive)
     {

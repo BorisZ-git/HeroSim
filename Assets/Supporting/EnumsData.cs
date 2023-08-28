@@ -15,4 +15,16 @@ public enum Skills
     Dual = 2,
     Strength = 3
 }
+public enum ItemType
+{
+    Armor,
+    Weapon
+}
+public enum ItemRank
+{
+    R,
+    SR,
+    SSR,
+    UR
+}
 
