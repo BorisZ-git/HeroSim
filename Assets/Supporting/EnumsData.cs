@@ -27,4 +27,16 @@ public enum ItemRank
     SSR,
     UR
 }
+public enum HeroRank
+{
+    A = 0,
+    B = 1,
+    C =2,
+    D = 3,
+    E = 4,
+    R = 5,
+    SR = 6,
+    SSR = 7,
+    UR = 8
+}
 

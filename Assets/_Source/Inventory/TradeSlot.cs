@@ -21,6 +21,7 @@ public class TradeSlot : InventorySlot
     private float _cost;
     private float _dealPercent;
 
+    public float Cost { get => _cost; }
     public override void OnDrop(PointerEventData eventData)
     {
         base.OnDrop(eventData);
@@ -46,7 +47,6 @@ public class TradeSlot : InventorySlot
     private void SetPrice(bool sell, bool buy, ItemGeneral item)
     {
         _cost = item.Cost + (item.Cost / 100 * _dealPercent);
-        print(_cost);
         _btnSell.interactable = sell;
         _btnBuy.interactable = buy;
         _textCost.text = $"Cost: {item.Cost}";
