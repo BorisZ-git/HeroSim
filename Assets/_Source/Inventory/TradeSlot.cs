@@ -7,6 +7,9 @@ using TMPro;
 
 public class TradeSlot : InventorySlot
 {
+    // Проверка условий на наличие денег
+    // Прописать сброс кнопок и значений сделки после транзакции
+    // Разбить логику операций на разные классы для читабельности
     [Header("Item Stats")]
     [SerializeField] private TMP_Text _textFinalCost;
     [SerializeField] private TMP_Text _textValue;
@@ -20,6 +23,7 @@ public class TradeSlot : InventorySlot
     [SerializeField] private Button _btnBuy;
     private float _cost;
     private float _dealPercent;
+    private bool _isTrade;
 
     public float Cost { get => _cost; }
     public override void OnDrop(PointerEventData eventData)
@@ -43,6 +47,14 @@ public class TradeSlot : InventorySlot
         }
         return true;
     }
+    private void Update()
+    {
+        if (_isTrade)
+        {
+            //CheckMoney? and ChildCount?;
+
+        }
+    }
 
     private void SetPrice(bool sell, bool buy, ItemGeneral item)
     {
@@ -53,24 +65,38 @@ public class TradeSlot : InventorySlot
         _textFinalCost.text = _cost.ToString();
         switch (item.ItemType)
         {
-            case ItemType.Armor:
-                SetTextItemStats($"Armor: {(item as ArmorItem).Armor}", $"Strength: {(item as ArmorItem).Strength}",
-    $"Agility: {(item as ArmorItem).Agility}", $"Rank: {(item as ArmorItem).Rank}");
+            case ItemType.Equipment:
+                SetEquipmentDeal(item as EquipmentItem);
                 break;
-            case ItemType.Weapon:
-                SetTextItemStats($"Damage: {(item as WeaponItem).Damage}", $"Strength: {(item as WeaponItem).Strength}",
-                    $"Agility: {(item as WeaponItem).Agility}", $"Rank: {(item as WeaponItem).Rank}");
+            case ItemType.Potion:
+                break;
+            case ItemType.Other:
                 break;
             default:
                 break;
         }
-        // переписать поля как общие
+    }
+    private void SetEquipmentDeal(EquipmentItem item)
+    {
+        string value = "";
+        switch (item.EquipmentType)
+        {
+            case EquipmentType.Armor:
+                value = $"Armor: {item.Value}";
+                break;
+            case EquipmentType.Weapon:
+                value = $"Damage: {item.Value}";
+                break;
+            default:
+                break;
+        }
+        SetTextItemStats(value, item.Strength.ToString(), item.Agility.ToString(), item.Rank.ToString());
     }
     private void SetTextItemStats(string value, string strength, string agility, string rank)
     {
         _textValue.text = value;
-        _textStrength.text = strength;
-        _textAgility.text = agility;
-        _textRank.text = rank;
+        _textStrength.text = "Strength: " + strength;
+        _textAgility.text = "Agility: " + agility;
+        _textRank.text = "Rank: " + rank;
     }
 }

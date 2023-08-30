@@ -17,6 +17,12 @@ public enum Skills
 }
 public enum ItemType
 {
+    Equipment,
+    Potion,
+    Other
+}
+public enum EquipmentType
+{
     Armor,
     Weapon
 }

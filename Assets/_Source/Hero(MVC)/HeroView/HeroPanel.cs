@@ -4,24 +4,15 @@ using UnityEngine;
 using TMPro;
 public class HeroPanel : MonoBehaviour
 {
-    // убрать доступ к view в контроллер
-    public static HeroPanel HeroViewHeader;
-    private void Awake()
-    {
-        if(HeroViewHeader != null)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            HeroViewHeader = this;
-        }
-        UpdateUIView();
-    }
+
     [SerializeField] private TMP_Text _textMoney;
     [SerializeField] private TMP_Text _textLvl;
     [SerializeField] private TMP_Text _textRank;
-
+    private void Awake()
+    {
+        HeroController.UpdateHeroPanel += UpdateUIView;
+        UpdateUIView();
+    }
 
     // прикрутить наблюдателя
     public void UpdateUIView()
