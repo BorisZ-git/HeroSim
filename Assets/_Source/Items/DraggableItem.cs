@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 
 [RequireComponent(typeof(Image))] [RequireComponent(typeof(ItemGeneral))]
 public class DraggableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
+    public event Action EndDrag;
+
     [HideInInspector] public Transform ParentAfterDrag;
     public Belongs belongs;
     private Image _image;
@@ -31,5 +34,6 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         transform.SetParent(ParentAfterDrag);
         _image.raycastTarget = true;
+        if (EndDrag != null) EndDrag();
     }
 }

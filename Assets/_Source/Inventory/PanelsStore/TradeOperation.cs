@@ -14,13 +14,26 @@ public class TradeOperation : MonoBehaviour
     }
     public void TradeDeal(bool isBuy)
     {
-        if (isBuy)
+        if (isBuy && TryBuy())
         {
             HeroController.ChangeMoney(-_slot.Cost);
+            _slot.FinishDeal();
+        }
+        else if(!isBuy)
+        {
+            HeroController.ChangeMoney(+_slot.Cost);
+            _slot.FinishDeal();
+        }
+    }
+    private bool TryBuy()
+    {
+        if(_slot.Cost > HeroData.Money)
+        {
+            return false;
         }
         else
         {
-            HeroController.ChangeMoney(+_slot.Cost);
+            return true;
         }
     }
 }

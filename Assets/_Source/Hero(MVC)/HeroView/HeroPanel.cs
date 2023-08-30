@@ -14,7 +14,7 @@ public class HeroPanel : MonoBehaviour
         UpdateUIView();
     }
 
-    // прикрутить наблюдателя
+    
     public void UpdateUIView()
     {
         _textMoney.text = HeroData.Money.ToString();

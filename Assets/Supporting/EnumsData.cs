@@ -26,6 +26,22 @@ public enum EquipmentType
     Armor,
     Weapon
 }
+public enum ArmorType
+{
+    Head,
+    Shoulders,
+    Back,
+    Chest,
+    Hands,
+    Legs
+}
+public enum WeaponType
+{
+    OneHandSword,
+    TwoHandSword,
+    Dagger,
+    Staff
+}
 public enum ItemRank
 {
     R,

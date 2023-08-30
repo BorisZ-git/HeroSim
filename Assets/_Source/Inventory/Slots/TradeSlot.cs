@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class TradeSlot : InventorySlot
 {
-    // Проверка условий на наличие денег
-    // Прописать сброс кнопок и значений сделки после транзакции
+    // Переносить элемент в надлежащии инвентари
     // Разбить логику операций на разные классы для читабельности
+
     [Header("Item Stats")]
     [SerializeField] private TMP_Text _textFinalCost;
     [SerializeField] private TMP_Text _textValue;
@@ -23,12 +24,12 @@ public class TradeSlot : InventorySlot
     [SerializeField] private Button _btnBuy;
     private float _cost;
     private float _dealPercent;
-    private bool _isTrade;
 
     public float Cost { get => _cost; }
     public override void OnDrop(PointerEventData eventData)
     {
         base.OnDrop(eventData);
+        _item.EndDrag += CheckItemParent;
     }
     protected override bool CheckSlot(DraggableItem item)
     {
@@ -47,15 +48,15 @@ public class TradeSlot : InventorySlot
         }
         return true;
     }
-    private void Update()
+    private void CheckItemParent()
     {
-        if (_isTrade)
+        if(_item?.transform.parent != transform)
         {
-            //CheckMoney? and ChildCount?;
-
+            ResetItemStateView();
+            _item.EndDrag -= CheckItemParent;
+            _item = null;
         }
     }
-
     private void SetPrice(bool sell, bool buy, ItemGeneral item)
     {
         _cost = item.Cost + (item.Cost / 100 * _dealPercent);
@@ -98,5 +99,36 @@ public class TradeSlot : InventorySlot
         _textStrength.text = "Strength: " + strength;
         _textAgility.text = "Agility: " + agility;
         _textRank.text = "Rank: " + rank;
+    }
+    public void FinishDeal()
+    {
+        ResetItemStateView();
+        Destroy(_item.gameObject);
+        return;
+        ChangeBelonger();
+    }
+    private void ResetItemStateView()
+    {
+        _btnSell.interactable = false;
+        _btnBuy.interactable = false;
+        _textCost.text = "Cost: ";
+        _textFinalCost.text = " ";
+        SetTextItemStats("Value: ", " ", " ", " ");
+    }
+    private void ChangeBelonger()
+    {
+        switch (_item.belongs)
+        {
+            case Belongs.Hero:
+                _item.belongs = Belongs.Merchant;
+                break;
+            case Belongs.Merchant:
+                _item.belongs = Belongs.Hero;
+                break;
+        }
+        // Должны добавлять объект в список элементов определенных инвентарей
+        // Для этого нужно создать логику списков содержащихся в инвентаре объектов
+        _item.transform.SetParent(transform);
+        _item.ParentAfterDrag = gameObject.transform;
     }
 }
