@@ -29,7 +29,10 @@ public class TradeSlot : InventorySlot
     private float _dealPercent;
 
     public float Cost { get => _cost; }
+    public DraggableItem Item { get => _item; }
 
+    #region Separate
+    #region This
     protected override bool CheckSlot(DraggableItem item)
     {
         switch (item.belongs)
@@ -56,6 +59,8 @@ public class TradeSlot : InventorySlot
             _item = null;
         }
     }
+    #endregion
+    #region View
     private void SetPrice(bool sell, bool buy, ItemGeneral item)
     {
         _cost = item.Cost + (item.Cost / 100 * _dealPercent);
@@ -99,11 +104,6 @@ public class TradeSlot : InventorySlot
         _textAgility.text = "Agility: " + agility;
         _textRank.text = "Rank: " + rank;
     }
-    public void FinishDeal()
-    {
-        ResetItemStateView();
-        ChangeBelonger();
-    }
     private void ResetItemStateView()
     {
         _btnSell.interactable = false;
@@ -112,6 +112,14 @@ public class TradeSlot : InventorySlot
         _textFinalCost.text = " ";
         SetTextItemStats("Value: ", " ", " ", " ");
     }
+    #endregion
+    #region Controller
+    public void FinishDeal()
+    {
+        ResetItemStateView();
+        ChangeBelonger();
+    }
+
     private void ChangeBelonger()
     {
         switch (_item.belongs)
@@ -128,4 +136,7 @@ public class TradeSlot : InventorySlot
                 break;
         }
     }
+    #endregion
+    #endregion
+
 }
