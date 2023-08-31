@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-abstract public class GeneralInventory : MonoBehaviour
+public class GeneralInventory : MonoBehaviour
 {
+    [SerializeField] private GameObject _inventory;
     [SerializeField] private InventorySlot _slotPrefab;
     protected List<ItemGeneral> _items;
     protected List<InventorySlot> _slots;
@@ -28,28 +29,43 @@ abstract public class GeneralInventory : MonoBehaviour
     private void Awake()
     {
         _sortEquipment = new InventoryEquipmentSort();
-        ResizeLists();
+        _items = new List<ItemGeneral>();
+        _slots = new List<InventorySlot>();
+        _freeSlots = new List<InventorySlot>();
+        InitLists();
     }
     public void AddItemToFreeSlot(ItemGeneral item)
     {
         if(_freeSlots.Count == 0)
         {
             CreateFreeSlot();
+            _slots.Add(_freeSlots[0]);
         }
         item.transform.SetParent(_freeSlots[0].transform);
-        _slots.Add(_freeSlots[0]);
         _freeSlots.RemoveAt(0);
+        // Sort Item
     }
     private void CreateFreeSlot()
     {
-        _freeSlots.Add(Instantiate(_slotPrefab, transform));
+        _freeSlots.Add(Instantiate(_slotPrefab, _inventory.transform));
     }
-    private void ResizeLists()
+    public void ResizeFreeSlots()
+    {
+        _freeSlots.Clear();
+        foreach (var item in _slots)
+        {
+            if (item.transform.childCount == 0)
+            {
+                _freeSlots.Add(item);
+            }
+        }
+    }
+    private void InitLists()
     {
         _items.Clear();
         _slots.Clear();
         _freeSlots.Clear();
-        _slots = GetComponentsInChildren<InventorySlot>().ToList();
+        _slots = _inventory.GetComponentsInChildren<InventorySlot>().ToList();
         foreach (var item in _slots)
         {
             if (item.transform.childCount > 0)
@@ -64,6 +80,8 @@ abstract public class GeneralInventory : MonoBehaviour
             }
         }
     }
+
+    #region InWork
     private void SortItemType(ItemGeneral item)
     {
         switch (item.ItemType)
@@ -148,4 +166,5 @@ abstract public class GeneralInventory : MonoBehaviour
                 break;
         }
     }
+    #endregion
 }

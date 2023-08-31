@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4876693588730993254}
   - component: {fileID: 6481450592171008789}
   m_Layer: 5
-  m_Name: Image_InventorySlot
+  m_Name: Image_InventorySlotMerchant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,3 +113,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c1b251a60ecb44fa502e2f875d0558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _belong: 1

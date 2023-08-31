@@ -8,7 +8,6 @@ using System;
 
 public class TradeSlot : InventorySlot
 {
-    // Переносить элемент в надлежащии инвентари
     // Разбить логику операций на разные классы для читабельности
 
     [Header("Item Stats")]
@@ -22,15 +21,15 @@ public class TradeSlot : InventorySlot
     [Header("Links")]
     [SerializeField] private Button _btnSell;
     [SerializeField] private Button _btnBuy;
+    [Header("InventoryLinks")]
+    [SerializeField] private GeneralInventory _heroInventory;
+    [SerializeField] private GeneralInventory _merchantInventory;
+
     private float _cost;
     private float _dealPercent;
 
     public float Cost { get => _cost; }
-    public override void OnDrop(PointerEventData eventData)
-    {
-        base.OnDrop(eventData);
-        _item.EndDrag += CheckItemParent;
-    }
+
     protected override bool CheckSlot(DraggableItem item)
     {
         switch (item.belongs)
@@ -48,9 +47,9 @@ public class TradeSlot : InventorySlot
         }
         return true;
     }
-    private void CheckItemParent()
+    protected override void CheckItemParent()
     {
-        if(_item?.transform.parent != transform)
+        if (_item != null && _item.transform.parent != transform)
         {
             ResetItemStateView();
             _item.EndDrag -= CheckItemParent;
@@ -103,8 +102,6 @@ public class TradeSlot : InventorySlot
     public void FinishDeal()
     {
         ResetItemStateView();
-        Destroy(_item.gameObject);
-        return;
         ChangeBelonger();
     }
     private void ResetItemStateView()
@@ -121,14 +118,14 @@ public class TradeSlot : InventorySlot
         {
             case Belongs.Hero:
                 _item.belongs = Belongs.Merchant;
+                _heroInventory?.ResizeFreeSlots();
+                _merchantInventory?.AddItemToFreeSlot(_item.GetComponent<ItemGeneral>());
                 break;
             case Belongs.Merchant:
                 _item.belongs = Belongs.Hero;
+                _merchantInventory?.ResizeFreeSlots();
+                _heroInventory?.AddItemToFreeSlot(_item.GetComponent<ItemGeneral>());
                 break;
         }
-        // Должны добавлять объект в список элементов определенных инвентарей
-        // Для этого нужно создать логику списков содержащихся в инвентаре объектов
-        _item.transform.SetParent(transform);
-        _item.ParentAfterDrag = gameObject.transform;
     }
 }
