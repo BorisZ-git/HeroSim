@@ -11,7 +11,6 @@ public class TradeOperation : MonoBehaviour
     [SerializeField] private GeneralInventory _heroInventory;
     [SerializeField] private GeneralInventory _merchantInventory;
 
-
     private void Awake()
     {
         if(_slot == null)
