@@ -73,6 +73,7 @@ public class GeneralInventory : MonoBehaviour
                 _items.Add(item.GetComponentInChildren<ItemGeneral>());
                 //Sort items
                 //SortItemType(item.GetComponentInChildren<ItemGeneral>());
+
             }
             else
             {
