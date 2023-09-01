@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,7 +10,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         _dragItem = eventData.pointerDrag.GetComponent<DraggableItem>();
-        if (transform.childCount == 0 && CheckSlot(_dragItem))
+        if (transform.childCount == 0 && CheckSlotBelongs(_dragItem))
         {
             _item = _dragItem;
             if (_item != null && _item.transform.parent != this.transform)
@@ -22,7 +20,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             _item.ParentAfterDrag = this.transform;
         }
     }
-    protected virtual bool CheckSlot(DraggableItem item)
+    protected virtual bool CheckSlotBelongs(DraggableItem item)
     {
         if (item == null) return false;
         switch (_belong)
@@ -49,5 +47,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
         _item.EndDrag -= FinishDrag;
     }
+    /// <summary>
+    /// Checking for neccesery of resize free slots in inventory. If item.parent != slot.parent on drop
+    /// </summary>
     protected virtual void CheckItemParent() { print("Not ovveride in Inventory children classes method ResetItemStateView"); }
 }

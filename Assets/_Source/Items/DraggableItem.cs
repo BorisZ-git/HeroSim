@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,9 +11,11 @@ public class DraggableItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     [HideInInspector] public Transform ParentAfterDrag;
     public Belongs belongs;
     private Image _image;
+    public ItemGeneral Item { get; private set; }
     private void Awake()
     {
         _image = GetComponent<Image>();
+        Item = GetComponent<ItemGeneral>();
     }
     public void OnBeginDrag(PointerEventData eventData)
     {

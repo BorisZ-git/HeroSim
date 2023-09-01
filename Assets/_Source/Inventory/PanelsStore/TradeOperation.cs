@@ -1,44 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
+[RequireComponent(typeof(TradeItemStats))]
 public class TradeOperation : MonoBehaviour
 {
-    [Header("Item Stats")]
-    [SerializeField] private TMP_Text _textFinalCost;
-    [SerializeField] private TMP_Text _textValue;
-    [SerializeField] private TMP_Text _textStrength;
-    [SerializeField] private TMP_Text _textAgility;
-    [SerializeField] private TMP_Text _textRank;
-    [SerializeField] private TMP_Text _textCost;
-
     [Header("Links")]
     [SerializeField] private TradeSlot _slot;
-    [SerializeField] private Button _btnSell;
-    [SerializeField] private Button _btnBuy;
+    [SerializeField] private TradeItemStats _tradeView;
+
     [Header("InventoryLinks")]
     [SerializeField] private GeneralInventory _heroInventory;
     [SerializeField] private GeneralInventory _merchantInventory;
+
+
     private void Awake()
     {
         if(_slot == null)
         {
             _slot = GetComponentInChildren<TradeSlot>();
         }
+        if(_tradeView == null)
+        {
+            _tradeView = GetComponent<TradeItemStats>();
+        }
+        _slot.SetController(this);
     }
     public void TradeDeal(bool isBuy)
     {
         if (isBuy && TryBuy())
         {
             HeroController.ChangeMoney(-_slot.Cost);
-            _slot.FinishDeal();
+            FinishDeal();
         }
         else if(!isBuy)
         {
             HeroController.ChangeMoney(+_slot.Cost);
-            _slot.FinishDeal();
+            FinishDeal();
         }
     }
     private bool TryBuy()
@@ -52,44 +48,33 @@ public class TradeOperation : MonoBehaviour
             return true;
         }
     }
-    #region InWork
-
-    private void SetTextItemStats(string value, string strength, string agility, string rank)
-    {
-        _textValue.text = value;
-        _textStrength.text = "Strength: " + strength;
-        _textAgility.text = "Agility: " + agility;
-        _textRank.text = "Rank: " + rank;
-    }
     public void FinishDeal()
     {
-        ResetItemStateView();
-        ChangeItemBelonger();
+        _tradeView.ResetItemStateView();
+        ChangeBelonger();
     }
-    private void ResetItemStateView()
+    private void ChangeBelonger()
     {
-        _btnSell.interactable = false;
-        _btnBuy.interactable = false;
-        _textCost.text = "Cost: ";
-        _textFinalCost.text = " ";
-        SetTextItemStats("Value: ", " ", " ", " ");
-    }
-    private void ChangeItemBelonger()
-    {
-        switch (_slot.Item.belongs)
+        switch (_slot.DrageItem.belongs)
         {
-            //case Belongs.Hero:
-            //    _item.belongs = Belongs.Merchant;
-            //    _heroInventory?.ResizeFreeSlots();
-            //    _merchantInventory?.AddItemToFreeSlot(_item.GetComponent<ItemGeneral>());
-            //    break;
-            //case Belongs.Merchant:
-            //    _item.belongs = Belongs.Hero;
-            //    _merchantInventory?.ResizeFreeSlots();
-            //    _heroInventory?.AddItemToFreeSlot(_item.GetComponent<ItemGeneral>());
-            //    break;
+            case Belongs.Hero:
+                _slot.DrageItem.belongs = Belongs.Merchant;
+                _heroInventory?.ResizeFreeSlots();
+                _merchantInventory?.AddItemToFreeSlot(_slot.DrageItem.Item);
+                break;
+            case Belongs.Merchant:
+                _slot.DrageItem.belongs = Belongs.Hero;
+                _merchantInventory?.ResizeFreeSlots();
+                _heroInventory?.AddItemToFreeSlot(_slot.DrageItem.Item);
+                break;
         }
     }
-
-    #endregion
+    public void UpdateItemStats(bool sell, bool buy, ItemGeneral item, float finalCost)
+    {
+        _tradeView.SetPrice(sell, buy, item, finalCost);
+    }
+    public void EmptySlot()
+    {
+        _tradeView.ResetItemStateView();
+    }
 }
