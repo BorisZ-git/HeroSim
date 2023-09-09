@@ -1,59 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
+/// <summary>
+/// Additional class for help sort items
+/// </summary>
 public class InventoryEquipmentSort
 {
-    private ItemGeneral _item;
-    public void SortItem(ItemGeneral item)
+    #region InWork
+    public List<InventorySlot> SortList(List<ItemGeneral> items, BtnSortSlots sortType)
     {
-        _item = item;
-        switch ((item as EquipmentItem).EquipmentType)
+        List<InventorySlot> temp = new List<InventorySlot>();
+        foreach (var item in items)
         {
-            case EquipmentType.Armor:
-                SortArmor(item as ArmorItem);
-                break;
-            case EquipmentType.Weapon:
-                SortWeapon(item as WeaponItem);
-                break;
-            default:
-                break;
+            if ((item as EquipmentItem).EquipmentType == sortType.Type)
+            {
+                switch (sortType.Type)
+                {
+                    case EquipmentType.Armor:
+                        if (((item as EquipmentItem) as ArmorItem).ArmorType == sortType.ArmorType)
+                            temp.Add(item.GetComponentInParent<InventorySlot>());
+                        break;
+                    case EquipmentType.Weapon:
+                        if (((item as EquipmentItem) as WeaponItem).WeaponType == sortType.WeaponType)
+                            temp.Add(item.GetComponentInParent<InventorySlot>());
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
+        return temp;
     }
-    private void SortArmor(ArmorItem item)
-    {        
-        switch (item.ArmorType)
-        {
-            case ArmorType.Head:
-                break;
-            case ArmorType.Shoulders:
-                break;
-            case ArmorType.Back:
-                break;
-            case ArmorType.Chest:
-                break;
-            case ArmorType.Hands:
-                break;
-            case ArmorType.Legs:
-                break;
-            default:
-                break;
-        }
-    }
-    private void SortWeapon(WeaponItem item)
-    {
-        switch (item.WeaponType)
-        {
-            case WeaponType.OneHandSword:
-                break;
-            case WeaponType.TwoHandSword:
-                break;
-            case WeaponType.Dagger:
-                break;
-            case WeaponType.Staff:
-                break;
-            default:
-                break;
-        }
-    }
+    #endregion
+
 }

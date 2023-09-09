@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 6208124322211270832}
   - component: {fileID: 120646236047751404}
   - component: {fileID: 2328465985448055760}
-  - component: {fileID: 8865119766709253793}
-  - component: {fileID: 8026793158297401208}
+  - component: {fileID: 4733622561943647508}
+  - component: {fileID: 4836337724523285057}
   m_Layer: 5
-  m_Name: Image_ItemWeapon
+  m_Name: Image_ItemHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cdaa2dcdfea41624fa68ddf7677927ce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 52887eadf1e28ec419dc2e1b76b3a953, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8865119766709253793
+--- !u!114 &4733622561943647508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParentAfterDrag: {fileID: 0}
   belongs: 1
---- !u!114 &8026793158297401208
+--- !u!114 &4836337724523285057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,12 +100,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1592223954097607705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da4b27dac6178a447b6dae81b369cbac, type: 3}
+  m_Script: {fileID: 11500000, guid: 4eee0039643024940a4cfff9f797bf92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cost: 1500
+  _cost: 3500
   _value: 15
-  _agility: 2
+  _agility: 1
   _strength: 1
   _itemRank: 0
-  _eType: 1
+  _eType: 0
+  _armorType: 0
