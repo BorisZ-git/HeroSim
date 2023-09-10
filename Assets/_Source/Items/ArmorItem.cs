@@ -6,4 +6,9 @@ public class ArmorItem : EquipmentItem
 {
     [SerializeField] private ArmorType _armorType;
     public ArmorType ArmorType { get => _armorType; }
+
+    protected override EquipmentType SetEquipmentType()
+    {
+        return EquipmentType.Armor;
+    }
 }

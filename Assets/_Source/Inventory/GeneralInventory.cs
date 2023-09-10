@@ -11,9 +11,6 @@ public class GeneralInventory : MonoBehaviour
     protected List<InventorySlot> _slots;
     protected List<InventorySlot> _freeSlots;
 
-    // rewrite with own Classes: ArmorList and WeaponList
-    //protected ArmorList _equpmentHead = new ArmorList(ArmorType.Head);
-
     private InventoryEquipmentSort _sortEquipment;
     protected List<InventorySlot> _sortedList;
 
@@ -25,6 +22,7 @@ public class GeneralInventory : MonoBehaviour
         _freeSlots = new List<InventorySlot>();
         InitLists();
     }
+    // ¬о врем€ сортировки при продаже продавцу не отображаетьс€, только после повторной сортировке
     public void AddItemToFreeSlot(ItemGeneral item)
     {
         if(_freeSlots.Count == 0)
@@ -33,8 +31,11 @@ public class GeneralInventory : MonoBehaviour
             _slots.Add(_freeSlots[0]);
         }
         item.transform.SetParent(_freeSlots[0].transform);
+        //Add to item list
+        _items.Add(_freeSlots[0].GetComponentInChildren<ItemGeneral>());
         _freeSlots.RemoveAt(0);
         // Sort Item
+        // ƒобавить отображение если отсортирован список
     }
     private void CreateFreeSlot()
     {
@@ -62,8 +63,6 @@ public class GeneralInventory : MonoBehaviour
             if (item.transform.childCount > 0)
             {
                 _items.Add(item.GetComponentInChildren<ItemGeneral>());
-                //Sort items
-                //SortItemType(item.GetComponentInChildren<ItemGeneral>());
             }
             else
             {
@@ -80,11 +79,13 @@ public class GeneralInventory : MonoBehaviour
     }
     public void SortListByType(BtnSortSlots sortType)
     {
+        SlotsOnOff(true);
         _sortedList = _sortEquipment.SortList(_items, sortType);
-        SlotsOnOff(false);
-        foreach (var item in _sortedList)
+        if (_sortedList.Count == 0) return;
+        foreach (var item in _slots)
         {
-            item.gameObject.SetActive(true);
+            if (MyComparer(item)) item.gameObject.SetActive(true);
+            else item.gameObject.SetActive(false);
         }
     }
     private void SlotsOnOff(bool setter)
@@ -93,6 +94,17 @@ public class GeneralInventory : MonoBehaviour
         {
             item.gameObject.SetActive(setter);
         }
+    }
+    private bool MyComparer(InventorySlot slot)
+    {
+        foreach (var item in _sortedList)
+        {
+            if(item == slot)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     #endregion
 }
